@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>マルチプレイ・ジオゲッサー</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">GeoParty</div>
+      <div class="room-info">
+        <div id="room-id" class="muted">Room: -</div>
+        <div id="role" class="muted">Role: -</div>
+      </div>
+      <div class="controls">
+        <button id="btn-create" class="btn">Create Room</button>
+        <button id="btn-join" class="btn">Join Room</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <aside class="left">
+        <section class="card" id="lobby-card">
+          <h3>Lobby</h3>
+          <div id="lobby-players"></div>
+          <div id="host-controls" class="host-only">
+            <h4>Host Controls</h4>
+            <label>Time Limit (sec, -1無制限): <input id="time-limit" type="number" value="-1"></label>
+            <label>Guess Countdown (sec, -1無制限): <input id="guess-countdown" type="number" value="30"></label>
+            <button id="start-round" class="btn primary">Start Round</button>
+            <button id="kick-selected" class="btn danger">Kick Selected</button>
+          </div>
+          <div id="join-form" class="join-form">
+            <input id="display-name" placeholder="名前" />
+            <input id="room-input" placeholder="Room ID" />
+          </div>
+        </section>
+
+        <section class="card" id="ranking-card">
+          <h3>Round Ranking</h3>
+          <ol id="ranking-list" class="ranking"></ol>
+        </section>
+      </aside>
+
+      <section class="center">
+        <div class="map-wrap">
+          <iframe id="streetview" class="map-iframe" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div id="small-map" class="small-map compact"></div>
+          <div class="mask-topleft"></div>
+        </div>
+
+        <!-- result map that slides up on round end -->
+        <div id="result-map" class="result-map">
+        </div>
+
+        <div id="controls-bottom" class="bottom-controls">
+          <div class="coords">選択: <span id="sel-lat">—</span>, <span id="sel-lng">—</span></div>
+          <div id="attempts" class="attempts">残り回答: <span id="attempts-left">2</span></div>
+          <div class="btns">
+            <button id="submit" class="btn primary">回答</button>
+            <button id="next-round" class="btn host-only" disabled>次のターン（ホスト）</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right">
+        <button id="small-close" class="btn small">閉じる</button>
+        <div id="result-panel" class="result-panel">
+          <button id="close-result" class="btn small">×</button>
+          <div class="result-number">
+            <div>距離: <span class="num" id="result-distance">0.00</span> km</div>
+            <div>時間: <span class="num" id="result-time">0.00</span> s</div>
+            <div>スコア: <span class="num" id="result-score">0</span></div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Host next button fixed to screen bottom-left -->
+  <button id="host-next" class="btn primary host-only result-next" style="display:none">次のターン（ホスト）</button>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
