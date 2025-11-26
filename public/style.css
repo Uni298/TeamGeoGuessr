@@ -1,0 +1,459 @@
+:root {
+  --bg: #ffffff;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --card: #f8fafc;
+  --glass: rgba(255, 255, 255, 0.8);
+}
+
+* {
+  box-sizing: border-box
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  font-family: Inter, system-ui, Segoe UI, Helvetica, Arial
+}
+
+.topbar {
+  height: 64px;
+  background: linear-gradient(180deg, #fff, #f7fbff);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid #eef2f7;
+  transition: all 300ms ease;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 18px
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px
+}
+
+.controls .btn {
+  margin-left: 8px
+}
+
+.btn {
+  background: #fff;
+  border: 1px solid #e6eef6;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: #fff;
+  border: none
+}
+
+.btn.danger {
+  background: #fee2e2;
+  color: #7f1d1d
+}
+
+.btn.small {
+  padding: 6px 8px;
+  font-size: 13px
+}
+
+.main {
+  display: flex;
+  height: calc(100% - 64px);
+  gap: 12px;
+  padding: 12px;
+  transition: all 300ms ease;
+}
+
+.left {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 300ms ease;
+}
+
+.right {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+  transition: all 300ms ease;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px
+}
+
+.card {
+  background: var(--card);
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+  transition: all 300ms ease;
+}
+
+.map-wrap {
+  position: relative;
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 6px 24px rgba(2, 6, 23, 0.06)
+}
+
+.map-iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block
+}
+
+.mask-topleft {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 200px;
+  height: 60px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1.0), rgba(255, 255, 255, 1.0));
+  border-radius: 8px;
+  pointer-events: none
+}
+
+.bottom-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px
+}
+
+.coords {
+  color: var(--muted)
+}
+
+.small-map {
+  width: 320px;
+  height: 220px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e6eef6;
+  transition: all 320ms ease;
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 55;
+  box-shadow: 0 10px 40px rgba(2, 6, 23, 0.12)
+}
+
+.small-map.compact {
+  width: 220px;
+  height: 140px
+}
+
+.small-map.reveal {
+  width: 300px;
+  height: 800px
+}
+
+/* result map overlay that slides from bottom */
+.result-map {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  bottom: 24px;
+  width: 90%;
+  max-width: 1100px;
+  height: 62vh;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 30px 80px rgba(2, 6, 23, 0.2);
+  z-index: 70;
+  overflow: hidden;
+  transition: transform 700ms cubic-bezier(.22, .9, .3, 1), width 300ms
+}
+
+.result-map.show {
+  transform: translate(-50%, 0%)
+}
+
+.result-map.small {
+  height: 240px;
+  width: 520px;
+  bottom: 12px;
+  transform: translate(-50%, 0%)
+}
+
+/* host next button that floats at screen bottom-left */
+.result-next {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 90
+}
+
+/* falling text helper */
+.drop-text {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-40px)
+}
+
+/* simple highlight when player has guessed */
+.player-row.guessed {
+  background: linear-gradient(90deg, rgba(38, 166, 154, 0.05), rgba(37, 99, 235, 0.03))
+}
+
+.player-row .status {
+  font-size: 12px;
+  color: var(--muted);
+  margin-left: 8px
+}
+
+/* big result numbers */
+.result-panel .result-number .num {
+  font-size: 30px;
+  color: #111;
+  font-weight: 900
+}
+
+/* attempts badge */
+.attempt-badge {
+  background: #111;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 13px;
+  margin-left: 8px
+}
+
+.my-attempts {
+  display: inline-block;
+  margin-left: 12px;
+  font-weight: 700
+}
+
+.flash-red {
+  animation: flashRed 700ms ease
+}
+
+@keyframes flashRed {
+  0% {
+    background: transparent
+  }
+
+  30% {
+    background: #fee2e2
+  }
+
+  100% {
+    background: transparent
+  }
+}
+
+/* highlight animation for player row (pulse) */
+.pulse-highlight {
+  animation: pulseFlash 900ms ease
+}
+
+@keyframes pulseFlash {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(239, 68, 68, 0)
+  }
+
+  30% {
+    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.18)
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(239, 68, 68, 0)
+  }
+}
+
+.result-panel {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -400px;
+  width: 520px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.12);
+  opacity: 0;
+  z-index: 60
+}
+
+.result-panel.show {
+  top: 80px;
+  opacity: 1
+}
+
+.result-number {
+  display: flex;
+  gap: 16px;
+  font-weight: 700
+}
+
+#lobby-players {
+  display: flex;
+  flex-direction: column;
+  gap: 6px
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 8px
+}
+
+.player-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%
+}
+
+.player-name {
+  flex: 1
+}
+
+/* Team colors */
+.player-row.team-red {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+  border-left: 3px solid #ef4444;
+}
+
+.player-row.team-blue {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+  border-left: 3px solid #3b82f6;
+}
+
+.btn-toggle-team {
+  padding: 4px 8px;
+  font-size: 11px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 200ms;
+}
+
+.btn-toggle-team:hover {
+  background: #e5e7eb;
+}
+
+.team-scores {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  padding: 8px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.team-score {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.team-score.red {
+  background: rgba(239, 68, 68, 0.1);
+  color: #991b1b;
+  border: 2px solid #ef4444;
+}
+
+.team-score.blue {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1e40af;
+  border: 2px solid #3b82f6;
+}
+
+.ranking {
+  padding-left: 18px;
+  margin: 6px 0
+}
+
+/* Minimize UI during active rounds */
+body.round-active .topbar {
+  height: 40px;
+  font-size: 12px;
+}
+
+body.round-active .topbar .brand {
+  font-size: 14px;
+}
+
+body.round-active .topbar .muted {
+  font-size: 11px;
+}
+
+body.round-active .topbar .btn {
+  padding: 4px 6px;
+  font-size: 11px;
+}
+
+body.round-active .main {
+  height: calc(100% - 40px);
+}
+
+body.round-active .left {
+  width: 180px;
+  font-size: 12px;
+}
+
+body.round-active .left h3,
+body.round-active .left h4 {
+  font-size: 13px;
+  margin: 4px 0;
+}
+
+body.round-active .left .card {
+  padding: 8px;
+}
+
+body.round-active .right {
+  width: 10px;
+  font-size: 12px;
+}
+
+body.round-active .bottom-controls {
+  padding: 6px;
+  font-size: 12px;
+}
+
+body.round-active .btn {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+@media (max-width:1000px) {
+  .left {
+    display: none
+  }
+
+  .right {
+    display: none
+  }
+}
