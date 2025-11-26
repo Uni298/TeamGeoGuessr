@@ -249,7 +249,7 @@ socket.on('round_started', async ({ spawnIndex, settings: s }) => {
   if (markerCorrect) smallMap.removeLayer(markerCorrect); markerCorrect = null;
   if (markerGuess) smallMap.removeLayer(markerGuess); markerGuess = null; $('sel-lat').textContent = '—'; $('sel-lng').textContent = '—'; $('submit').disabled = false;
   // pan small map to region
-  smallMap.setView([spawn.lat, spawn.lng], 5);
+  // smallMap.setView([spawn.lat, spawn.lng], 5);
   startElapsed();
 });
 
